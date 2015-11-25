@@ -4,7 +4,7 @@ function hexToNumber(hex)
     placeValue = 1
     for i = #hex, 1, -1 do
         local hexChar = hex:sub(i, i)
-        
+        if 
 
 function getScreen(terminal, layers)
     local returnScreen = {}
