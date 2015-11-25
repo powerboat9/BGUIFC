@@ -19,7 +19,7 @@ function getScreen(terminal, layers)
                 self[layer][x][y].color = tcolor
                 self[layer][x][y].bkcolor = bkcolor
             else
-                error(2, "Invalid color or character")
+                error("Invalid color or character", 2)
             end
         end
      end
