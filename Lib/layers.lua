@@ -54,4 +54,6 @@ function getScreen(terminal, layers)
             self:writeChar(layer, char, hexToNumber(charColor), hexToNumber(charBkcolor))
         end
     end
+    returnScreen.scroll = function(self)
+        self:clearLine(1)
 end
