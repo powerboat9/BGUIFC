@@ -1,10 +1,17 @@
 function hexToNumber(hex)
+    if type(hex) ~= "string" then
+        error("Parameter hex should be a string", 2)
+    end
     --Assumes big edien, first characters are most significant
     local number = 0
     placeValue = 1
     for i = #hex, 1, -1 do
         local hexChar = hex:sub(i, i)
-        if 
+        number = number + (placeValue * (tonumber(string.sub("0123456789ABCDEF", string.find("0123456789ABCDEF", hexChar))) - 1))
+        placeValue = placeValue * 16
+    end
+    return number
+end
 
 function getScreen(terminal, layers)
     local returnScreen = {}
