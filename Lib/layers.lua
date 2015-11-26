@@ -15,7 +15,7 @@ end
 
 function getScreen(terminal, layers)
     local returnScreen = {}
-    layers = layers or 16
+    layers = layers or 256
     terminal = terminal or term.current()
     local sizeX, sizeY = terminal.getSize()
     returnScreen.bkcolor = term.getBackgroundColor()
