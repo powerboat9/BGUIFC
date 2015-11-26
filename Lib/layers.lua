@@ -18,6 +18,7 @@ function getScreen(terminal, layers)
     layers = layers or 16
     terminal = terminal or term.current()
     local sizeX, sizeY = terminal.getSize()
+    returnScreen.bkcolor = term.getBackgroundColor()
     returnScreen.sizeX, returnScreen.sizeY = sizeX, sizeY
     for i = 1, layers do
         for x = 1, sizeX do
@@ -41,6 +42,23 @@ function getScreen(terminal, layers)
             error("Invalid color or character", 2)
         end
     end
+    returnScreen.clearLine(self, layer, line)
+        for i = 1, self.sizeX do
+            local segment = self[layer][i][line]
+            segment.txt = " "
+            segment.bkcolor = self.bkcolor
+        end
+    end
+    returnScreen.scroll = function(self, layer)
+        for i = 1, self.sizeY do
+            self:clearLine(i)
+            if (i + 1) <= self.sizeY then
+                for j = 1, self.sizeX do
+                    self[layer][i][j] = self[layer][i + 1][j]
+                end
+            end
+        end
+    end
     returnScreen.blit = function(self, layer, txt, tcolor, bkcolor)
         for k, char in string.match(txt, ".") do
             local charColor, charBkcolor = tcolor:sub(k, k), bkcolor:sub(k, k)
@@ -54,6 +72,4 @@ function getScreen(terminal, layers)
             self:writeChar(layer, char, hexToNumber(charColor), hexToNumber(charBkcolor))
         end
     end
-    returnScreen.scroll = function(self)
-        self:clearLine(1)
 end
