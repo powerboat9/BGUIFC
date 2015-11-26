@@ -77,6 +77,7 @@ function getScreen(terminal, layers)
     returnScreen.blit = function(self, layer, txt, tcolor, bkcolor)
         for k, char in string.match(txt, ".") do
             local charColor, charBkcolor = tcolor:sub(k, k), bkcolor:sub(k, k)
+            self:writeChar(layer, char, hexToNumber(charColor), hexToNumber(charBkcolor))
             if self.posX > self.sizeX then
                 self.posX = 1
                 self.posY = self.posY + 1
@@ -84,7 +85,6 @@ function getScreen(terminal, layers)
             if self.posY > self.sizeY then
                 self:scroll()
             end
-            self:writeChar(layer, char, hexToNumber(charColor), hexToNumber(charBkcolor))
         end
     end
 end
