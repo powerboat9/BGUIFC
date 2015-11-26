@@ -12,4 +12,4 @@ screen:writeChar(layer, character to write, color of the character, background c
 
 screen:clearLine(layer, line to clear) - Clears a line.
 
-screen:scroll() - Scrolls the screen.
+screen:scroll(layer) - Scrolls the layer.
