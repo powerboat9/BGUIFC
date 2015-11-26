@@ -42,19 +42,19 @@ function getScreen(terminal, layers)
             error("Invalid color or character", 2)
         end
     end
-    returnScreen.clearLine(self, layer, line)
+    returnScreen.clearLine = function(self, layer, line)
         for i = 1, self.sizeX do
             local segment = self[layer][i][line]
             segment.txt = " "
             segment.bkcolor = self.bkcolor
         end
     end
-    returnScreen.clear(self, layer)
+    returnScreen.clear = function(self, layer)
         for j = 1, self.sizeY do
             self:clearLine(layer, j)
         end
     end
-    returnScreen.clearLayerRange(self, minLayer, maxLayer)
+    returnScreen.clearLayerRange = function(self, minLayer, maxLayer)
         if (minLayer < 1) or (minLayer > self.sizeLayer) then
             error("Invalid minLayer", 2)
         elseif (maxLayer < 1) or (maxLayer > self.sizeLayer) then
