@@ -19,7 +19,7 @@ function getScreen(terminal, layers)
     terminal = terminal or term.current()
     local sizeX, sizeY = terminal.getSize()
     returnScreen.bkcolor = term.getBackgroundColor()
-    returnScreen.sizeX, returnScreen.sizeY = sizeX, sizeY
+    returnScreen.sizeX, returnScreen.sizeY, returnScreen.sizeLayer = sizeX, sizeY, layers
     for i = 1, layers do
         for x = 1, sizeX do
             for y = 1, sizeY do
@@ -47,6 +47,21 @@ function getScreen(terminal, layers)
             local segment = self[layer][i][line]
             segment.txt = " "
             segment.bkcolor = self.bkcolor
+        end
+    end
+    returnScreen.clear(self, layer)
+        for j = 1, self.sizeY do
+            self:clearLine(layer, j)
+        end
+    end
+    returnScreen.clearLayerRange(self, minLayer, maxLayer)
+        if (minLayer < 1) or (minLayer > self.sizeLayer) then
+            error("Invalid minLayer", 2)
+        elseif (maxLayer < 1) or (maxLayer > self.sizeLayer) then
+            error("Invalid maxLayer", 2)
+        end
+        for i = minLayer, maxLayer do
+            self:clear(i)
         end
     end
     returnScreen.scroll = function(self, layer)
