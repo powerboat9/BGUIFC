@@ -7,7 +7,7 @@ function hexToNumber(hex)
     placeValue = 1
     for i = #hex, 1, -1 do
         local hexChar = hex:sub(i, i)
-        number = number + placeValue * ({string.find("0123456789ABCDEF", hexChar)}[1] - 1)
+        number = number + placeValue * (({string.find("0123456789ABCDEF", hexChar)})[1] - 1)
         placeValue = placeValue * 16
     end
     return number
