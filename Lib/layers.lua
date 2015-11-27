@@ -25,8 +25,8 @@ function getScreen(terminal, layers)
             for y = 1, sizeY do
                 returnScreen[i][x][y] = {
                     txt = " ",
-                    color = colors.white,
-                    bkground = colors.black
+                    color = "0",
+                    bkground = "F"
                 }
             end
         end
