@@ -23,28 +23,29 @@ function getScreen(terminal, layers)
     for i = 1, layers do
         for x = 1, sizeX do
             for y = 1, sizeY do
-                returnScreen[i][x][y] = {
+                returnScreen[i].bk.[x][y] = {
                     txt = " ",
                     color = "0",
                     bkground = "F"
                 }
             end
         end
+        returnScreen[i].obj = {}
     end
     returnScreen.posX, returnScreen.posY = 1, 1
     returnScreen.writeChar = function(self, layer, char, tcolor, bkcolor)
         local x, y = self.posX, self.posY
         if (#char == 1) and (color > 0) and (color <= 16) then
-            self[layer][x][y].txt = char
-            self[layer][x][y].color = tcolor
-            self[layer][x][y].bkcolor = bkcolor
+            self[layer].bk.[x][y].txt = char
+            self[layer].bk.[x][y].color = tcolor
+            self[layer].bk.[x][y].bkcolor = bkcolor
         else
             error("Invalid color or character", 2)
         end
     end
     returnScreen.clearLine = function(self, layer, line)
         for i = 1, self.sizeX do
-            local segment = self[layer][i][line]
+            local segment = self[layer].bk.[i][line]
             segment.txt = " "
             segment.bkcolor = self.bkcolor
         end
@@ -69,7 +70,7 @@ function getScreen(terminal, layers)
             self:clearLine(i)
             if (i + 1) <= self.sizeY then
                 for j = 1, self.sizeX do
-                    self[layer][i][j] = self[layer][i + 1][j]
+                    self[layer].bk.[i][j] = self[layer].bk.[i + 1][j]
                 end
             end
         end
@@ -77,7 +78,7 @@ function getScreen(terminal, layers)
     returnScreen.blit = function(self, layer, txt, tcolor, bkcolor)
         for k, char in string.match(txt, ".") do
             local charColor, charBkcolor = tcolor:sub(k, k), bkcolor:sub(k, k)
-            self:writeChar(layer, char, hexToNumber(charColor), hexToNumber(charBkcolor))
+            self:writeChar(layer, char, charColor, charBkcolor)
             if self.posX > self.sizeX then
                 self.posX = 1
                 self.posY = self.posY + 1
@@ -86,5 +87,8 @@ function getScreen(terminal, layers)
                 self:scroll()
             end
         end
+    end
+    returnScreen.redraw = function()
+        --Do stuff
     end
 end
