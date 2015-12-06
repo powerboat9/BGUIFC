@@ -23,29 +23,30 @@ function getScreen(terminal, layers)
     for i = 1, layers do
         for x = 1, sizeX do
             for y = 1, sizeY do
-                returnScreen[i].bk.[x][y] = {
+                returnScreen.layers[i].bk.[x][y] = {
                     txt = " ",
                     color = "0",
-                    bkground = "F"
+                    bkground = "F",
                 }
             end
         end
-        returnScreen[i].obj = {}
+        returnScreen.layers[i].obj = {}
+        returnScreen.layers[i].display = false
     end
     returnScreen.posX, returnScreen.posY = 1, 1
     returnScreen.writeChar = function(self, layer, char, tcolor, bkcolor)
         local x, y = self.posX, self.posY
         if (#char == 1) and (color > 0) and (color <= 16) then
-            self[layer].bk.[x][y].txt = char
-            self[layer].bk.[x][y].color = tcolor
-            self[layer].bk.[x][y].bkcolor = bkcolor
+            self.layers[layer].bk.[x][y].txt = char
+            self.layers[layer].bk.[x][y].color = tcolor
+            self.layers[layer].bk.[x][y].bkcolor = bkcolor
         else
             error("Invalid color or character", 2)
         end
     end
     returnScreen.clearLine = function(self, layer, line)
         for i = 1, self.sizeX do
-            local segment = self[layer].bk.[i][line]
+            local segment = self.layers[layer].bk.[i][line]
             segment.txt = " "
             segment.bkcolor = self.bkcolor
         end
@@ -54,6 +55,7 @@ function getScreen(terminal, layers)
         for j = 1, self.sizeY do
             self:clearLine(layer, j)
         end
+        self.layers[layer].display = false
     end
     returnScreen.clearLayerRange = function(self, minLayer, maxLayer)
         if (minLayer < 1) or (minLayer > self.sizeLayer) then
@@ -70,12 +72,13 @@ function getScreen(terminal, layers)
             self:clearLine(i)
             if (i + 1) <= self.sizeY then
                 for j = 1, self.sizeX do
-                    self[layer].bk.[i][j] = self[layer].bk.[i + 1][j]
+                    self.layers[layer].bk.[i][j] = self[layer].bk.[i + 1][j]
                 end
             end
         end
     end
     returnScreen.blit = function(self, layer, txt, tcolor, bkcolor)
+        self.layers[layer].display = true
         for k, char in string.match(txt, ".") do
             local charColor, charBkcolor = tcolor:sub(k, k), bkcolor:sub(k, k)
             self:writeChar(layer, char, charColor, charBkcolor)
@@ -88,7 +91,11 @@ function getScreen(terminal, layers)
             end
         end
     end
-    returnScreen.redraw = function()
-        --Do stuff
+    returnScreen.redraw = function(self)
+        term.setCursorPos(1, 1)
+        pixelLayersToShow = {}
+        for layer, layerData in ipairs(self.layers) do
+            if self.layers[layer].display then
+                --More Work
     end
 end
