@@ -102,6 +102,15 @@ function getScreen(terminal, layers)
                             pixelLayersToShow[x] = {}
                         end
                         if not pixelLayersToShow[x][y] then
-                            --Work
+                            pixelLayersToShow[x][y] = layer
+                        end
+                    end
+                end
+            end
+        end
+        local writeTxt
+        for x, xTable in ipairs(pixelLayersToShow) do
+            for y, layer in ipairs(xTable) do
+                --Work
     end
 end
