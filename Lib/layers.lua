@@ -96,6 +96,12 @@ function getScreen(terminal, layers)
         pixelLayersToShow = {}
         for layer, layerData in ipairs(self.layers) do
             if self.layers[layer].display then
-                --More Work
+                for x = 1, self.sizeX do
+                    for y = 1, self.sizeY do
+                        if type(pixelLayersToShow[x]) ~= "table" then
+                            pixelLayersToShow[x] = {}
+                        end
+                        if not pixelLayersToShow[x][y] then
+                            --Work
     end
 end
