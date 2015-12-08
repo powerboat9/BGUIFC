@@ -20,6 +20,7 @@ function getScreen(terminal, layers)
     local sizeX, sizeY = terminal.getSize()
     returnScreen.bkcolor = term.getBackgroundColor()
     returnScreen.sizeX, returnScreen.sizeY, returnScreen.sizeLayer = sizeX, sizeY, layers
+    returnScreen.term = terminal
     for i = 1, layers do
         for x = 1, sizeX do
             for y = 1, sizeY do
@@ -111,6 +112,9 @@ function getScreen(terminal, layers)
         local writeTxt
         for x, xTable in ipairs(pixelLayersToShow) do
             for y, layer in ipairs(xTable) do
-                --Work
+                local pixel = self.layers[layer].bk[x][y]
+                self.term.blit(pixel.txt, pixel.color, pixel.bkground)
+            end
+        end
     end
 end
