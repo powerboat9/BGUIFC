@@ -120,4 +120,5 @@ function getScreen(terminal, layers)
             end
         end
     end
+    return returnScreen
 end
