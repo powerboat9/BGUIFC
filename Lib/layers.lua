@@ -47,7 +47,7 @@ function getScreen(terminal, layers)
     end
     returnScreen.clearLine = function(self, layer, line)
         for i = 1, self.sizeX do
-            local segment = self.layers[layer].bk.[i][line]
+            local segment = self.layers[layer].bk[i][line]
             segment.txt = " "
             segment.bkcolor = self.bkcolor
         end
