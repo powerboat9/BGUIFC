@@ -38,9 +38,9 @@ function getScreen(terminal, layers)
     returnScreen.writeChar = function(self, layer, char, tcolor, bkcolor)
         local x, y = self.posX, self.posY
         if (#char == 1) and (color > 0) and (color <= 16) then
-            self.layers[layer].bk.[x][y].txt = char
-            self.layers[layer].bk.[x][y].color = tcolor
-            self.layers[layer].bk.[x][y].bkcolor = bkcolor
+            self.layers[layer].bk[x][y].txt = char
+            self.layers[layer].bk[x][y].color = tcolor
+            self.layers[layer].bk[x][y].bkcolor = bkcolor
         else
             error("Invalid color or character", 2)
         end
