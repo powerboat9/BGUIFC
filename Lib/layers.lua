@@ -24,7 +24,7 @@ function getScreen(terminal, layers)
     for i = 1, layers do
         for x = 1, sizeX do
             for y = 1, sizeY do
-                returnScreen.layers[i].bk.[x][y] = {
+                returnScreen.layers[i].bk[x][y] = {
                     txt = " ",
                     color = "0",
                     bkground = "F",
