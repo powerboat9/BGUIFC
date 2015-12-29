@@ -73,7 +73,7 @@ function getScreen(terminal, layers)
             self:clearLine(i)
             if (i + 1) <= self.sizeY then
                 for j = 1, self.sizeX do
-                    self.layers[layer].bk[i][j] = self[layer].bk.[i + 1][j]
+                    self.layers[layer].bk[i][j] = self[layer].bk[i + 1][j]
                 end
             end
         end
