@@ -21,8 +21,11 @@ function getScreen(terminal, layers)
     returnScreen.bkcolor = term.getBackgroundColor()
     returnScreen.sizeX, returnScreen.sizeY, returnScreen.sizeLayer = sizeX, sizeY, layers
     returnScreen.term = terminal
+    returnScreen.layers = {}
     for i = 1, layers do
+        returnScreen.layers[i] = {bk = {}}
         for x = 1, sizeX do
+            returnScreen.layers[i].bk[x] = {}
             for y = 1, sizeY do
                 returnScreen.layers[i].bk[x][y] = {
                     txt = " ",
