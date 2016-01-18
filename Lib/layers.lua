@@ -99,7 +99,7 @@ function getScreen(terminal, layers)
     returnScreen.redraw = function(self)
         term.setCursorPos(1, 1)
         pixelLayersToShow = {}
-        for layer, layerData in ipairs(self.layers) do
+        for layer in ipairs(self.layers) do
             if self.layers[layer].display then
                 for x = 1, self.sizeX do
                     for y = 1, self.sizeY do
@@ -109,10 +109,15 @@ function getScreen(terminal, layers)
                         if not pixelLayersToShow[x][y] then
                             pixelLayersToShow[x][y] = {
                                 ["layer"] = 0,
-                                ["isObj"] = false
+                                ["objID"] = -1
                             }
-                        if (not pixelLayersToShow[x][y]) or (pixelLayersToShow[x][y] < layer) then
-                            pixelLayersToShow[x][y] = layer
+                        if pixelLayersToShow[x][y].layer < layer then
+                            pixelLayersToShow[x][y].layer = layer
+                        end
+                        for id, object in ipairs(self.layers[layer].obj) do
+                            if (x >= object.upLeft.x) and (x <= object.downRight.x) and (y >= object.upLeft.y) and (y <= object.downRight.y) then
+                                pixelLayersToShow[x][y].objID = id
+                            end
                         end
                     end
                 end
