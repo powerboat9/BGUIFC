@@ -35,6 +35,7 @@ function getScreen(terminal, layers)
             end
         end
         returnScreen.layers[i].obj = {}
+        returnScreen.layers[i].clickMap = {}
         returnScreen.layers[i].display = false
     end
     returnScreen.posX, returnScreen.posY = 1, 1
@@ -105,6 +106,11 @@ function getScreen(terminal, layers)
                         if type(pixelLayersToShow[x]) ~= "table" then
                             pixelLayersToShow[x] = {}
                         end
+                        if not pixelLayersToShow[x][y] then
+                            pixelLayersToShow[x][y] = {
+                                ["layer"] = 0,
+                                ["isObj"] = false
+                            }
                         if (not pixelLayersToShow[x][y]) or (pixelLayersToShow[x][y] < layer) then
                             pixelLayersToShow[x][y] = layer
                         end
@@ -112,10 +118,10 @@ function getScreen(terminal, layers)
                 end
             end
         end
-        local writeTxt
         for x, xTable in ipairs(pixelLayersToShow) do
             for y, layer in ipairs(xTable) do
                 local pixel = self.layers[layer].bk[x][y]
+                self.term.setCursorPos(x, y)
                 self.term.blit(pixel.txt, pixel.color, pixel.bkground)
             end
         end
