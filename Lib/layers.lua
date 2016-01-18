@@ -105,7 +105,7 @@ function getScreen(terminal, layers)
                         if type(pixelLayersToShow[x]) ~= "table" then
                             pixelLayersToShow[x] = {}
                         end
-                        if not pixelLayersToShow[x][y] then
+                        if (not pixelLayersToShow[x][y]) or (pixelLayersToShow[x][y] < layer) then
                             pixelLayersToShow[x][y] = layer
                         end
                     end
