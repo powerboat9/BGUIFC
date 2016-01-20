@@ -111,13 +111,14 @@ function getScreen(terminal, layers)
                                 ["layer"] = 0,
                                 ["objID"] = -1
                             }
-                        if pixelLayersToShow[x][y].layer < layer then
-                            pixelLayersToShow[x][y].layer = layer
                         end
                         for id, object in ipairs(self.layers[layer].obj) do
-                            if (x >= object.upLeft.x) and (x <= object.downRight.x) and (y >= object.upLeft.y) and (y <= object.downRight.y) then
+                            if object:overlaps(x, y) then
                                 pixelLayersToShow[x][y].objID = id
                             end
+                        end
+                        if (pixelLayersToShow[x][y].layer < layer) and ((pixelLayersToShow[x][y].objID ~= -1) or (self.layers[layer].bk[x][y].bkground ~= "g")) then
+                            pixelLayersToShow[x][y].layer = layer
                         end
                     end
                 end
