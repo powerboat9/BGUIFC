@@ -9,11 +9,22 @@ function newButton(topLeftX, topLeftY, bottomRightX, bottomRightY, onColor, offC
             ["topLeftY"] = topLeftY,
             ["bottomRightX"] = bottomRightX,
             ["bottomRightY"] = bottomRightY,
-            ["onClick"] = onClick,
+            ["onClick"] = function(self)
+                if self.data.toggle or (not self.data.state) then
+                    if onClick(self) then
+                        if toggle then
+                            self.data.state = (not self.data.state)
+                        else
+                            self.data.state = true
+                            self.data.timeLastOn = advancedTime.getEpochTime()
+                        end
+                        
+            end,
             ["onColor"] = onColor,
             ["offColor"] = offColor,
             ["update"] = function(self)
-                if (self.data.timeLastOn +
+                if (not toggle) and (((self.data.timeLastOn + timeToStayOn) < advancedTime.getEpochTime()) or (self.data.timeLastOn == -1) then
+                    self.data.state = false
             ["timeLastOn"] = -1
         }
     }
