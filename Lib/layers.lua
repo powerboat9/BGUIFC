@@ -35,7 +35,7 @@ function getScreen(terminal, layers)
             end
         end
         returnScreen.layers[i].obj = {}
-        returnScreen.layers[i].clickMap = {}
+        returnScreen.layers[i].nameMap = {}
         returnScreen.layers[i].display = false
     end
     returnScreen.posX, returnScreen.posY = 1, 1
@@ -95,6 +95,19 @@ function getScreen(terminal, layers)
                 self:scroll()
             end
         end
+    end
+    returnScreen.addObj = function(self, layer, obj, name)
+        local id = 1
+        for k in ipairs(self.layers[layer].obj) do
+            id = id + 1
+        end
+        self.layers[layer].nameMap[name] = id
+        self.layers[layer].obj[id] = obj
+    end
+    returnScreen.removeObj = function(self, layer, name)
+        local id = self.layers[layer].nameMap[name]
+        self.layers[layer].nameMap[name] = nil
+        self.layers[layer].obj[id] = nil
     end
     returnScreen.redraw = function(self)
         term.setCursorPos(1, 1)
