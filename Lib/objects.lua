@@ -5,6 +5,7 @@ function newButton(topLeftX, topLeftY, bottomRightX, bottomRightY, onColor, offC
         ["data"] = {
             ["state"] = false,
             ["toggle"] = toggle,
+            ["txt"] = txt,
             ["topLeftX"] = topLeftX,
             ["topLeftY"] = topLeftY,
             ["bottomRightX"] = bottomRightX,
@@ -18,17 +19,25 @@ function newButton(topLeftX, topLeftY, bottomRightX, bottomRightY, onColor, offC
                             self.data.state = true
                             self.data.timeLastOn = advancedTime.getEpochTime()
                         end
-                        
+                    end
+                end
             end,
             ["onColor"] = onColor,
             ["offColor"] = offColor,
             ["update"] = function(self)
                 if (not toggle) and (((self.data.timeLastOn + timeToStayOn) < advancedTime.getEpochTime()) or (self.data.timeLastOn == -1) then
                     self.data.state = false
+                end
+            end,
             ["timeLastOn"] = -1
         }
     }
     returnObj.click = function(self, x, y)
         if (x >= topLeftX) and (x <= bottomRightX) and (y >= topLeftY) and (y <= bottomRightY) then
             self.data.onClick(self)
-            
+        end
+    end
+    returnObj.getPixelAt = function(self, x, y)
+        local char = {}
+        if (x >= topLeftX) and (x <= bottomRightX) and (y >= topLeftY) and (y <= bottomRightY) then
+            char
