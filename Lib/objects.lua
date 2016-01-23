@@ -1,4 +1,6 @@
-function newButton(topLeftX, topLeftY, bottomRightX, bottomRightY, onColor, offColor, toggle, txt, onClick)
+os.loadAPI("BGUIFC/Lib/advancedTime")
+
+function newButton(topLeftX, topLeftY, bottomRightX, bottomRightY, onColor, offColor, toggle, txt, onClick, timeToStayOn)
     local returnObj = {
         ["data"] = {
             ["state"] = false,
@@ -8,9 +10,11 @@ function newButton(topLeftX, topLeftY, bottomRightX, bottomRightY, onColor, offC
             ["bottomRightX"] = bottomRightX,
             ["bottomRightY"] = bottomRightY,
             ["onClick"] = onClick,
+            ["onColor"] = onColor,
+            ["offColor"] = offColor,
             ["update"] = function(self)
-                self
-            ["timeLastOn"] = 
+                if (self.data.timeLastOn +
+            ["timeLastOn"] = -1
         }
     }
     returnObj.click = function(self, x, y)
