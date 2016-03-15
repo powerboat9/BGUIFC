@@ -1,11 +1,12 @@
 os.loadAPI("BGUIFC/Lib/advancedTime")
 
-function newButton(topLeftX, topLeftY, bottomRightX, bottomRightY, onColor, offColor, toggle, txt, onClick, timeToStayOn)
+function newButton(topLeftX, topLeftY, bottomRightX, bottomRightY, onColor, offColor, toggle, txt, textColor, onClick, timeToStayOn)
     local returnObj = {
         ["data"] = {
             ["state"] = false,
             ["toggle"] = toggle,
             ["txt"] = txt,
+            ["txtColor"] = textColor,
             ["topLeftX"] = topLeftX,
             ["topLeftY"] = topLeftY,
             ["bottomRightX"] = bottomRightX,
@@ -40,4 +41,5 @@ function newButton(topLeftX, topLeftY, bottomRightX, bottomRightY, onColor, offC
     returnObj.getPixelAt = function(self, x, y)
         local char = {}
         if (x >= topLeftX) and (x <= bottomRightX) and (y >= topLeftY) and (y <= bottomRightY) then
-            char
+            local bkColor = (self.state and self. onColor) or self.offColor
+            
