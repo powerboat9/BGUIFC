@@ -130,7 +130,7 @@ function getScreen(terminal, layers)
                                 pixelLayersToShow[x][y].objID = id
                             end
                         end
-                        if (pixelLayersToShow[x][y].layer < layer) and ((pixelLayersToShow[x][y].objID ~= -1) or (self.layers[layer].bk[x][y].bkground ~= "g")) then
+                        if (pixelLayersToShow[x][y].layer < layer) and ((pixelLayersToShow[x][y].objID ~= -1) and (self.layers[layer].bk[x][y].bkground ~= "g")) then
                             pixelLayersToShow[x][y].layer = layer
                         end
                     end
