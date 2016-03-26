@@ -55,33 +55,58 @@ function newButton(border, x, y, txt, onColor, offColor, toggle, textColor, onCl
     return returnObj
 end
 
-function getMenue(x, y, title, titleColor, titleBkColor, ...)
+function getMenue(x, y, title, titleColor, titleBkColor, onClickMenue, ...)
     local returnObj = {
         ["data"] = {
             ["title"] = {
                 ["txt"] = title,
                 ["txtColor"] = titleColor,
-                ["bkColor"] = titleBkColor,
-                ["state"] = false
+                ["bkColor"] = titleBkColor
             },
+            ["state"] = false,
             ["items"] = {},
             ["x"] = x,
-            ["y"] = y
+            ["y"] = y,
+            ["onClickMenu"] = onClickMenue
         }
     }
     local maxSize = #title
-    for _, v in ipairs(args) do
-        if #v > maxSize then
-            maxSize = #v
+    for k, v in ipairs(args) do
+        local index = (k - (k % 3)) / 3
+        if k - (index * 3) == 0 then
+            if #v > maxSize then
+                maxSize = #v
+            end
+            returnObj.data.items[index + 1].txt = v
+        elseif k - (index * 3) == 1 then
+            returnObj.data.items[index + 1].txtColor = v
+        else
+            returnObj.data.items[index + 1].bkColor = v
         end
     end
     returnObj.data.size = maxSize
-    returnObj.click = function(self)
-        self.data.state = not self.data.state
+    returnObj.click = function(self, xPos, yPos)
+        local layers = 1 + ((self.data.state and #(self.data.items)) or 0)
+        if (xPos >= self.data.x) and (xPos <= (self.data.x + self.data.size)) and (yPos >= self.data.y) and (yPos <= (self.data.y + layers - 1)) then
+            local layer = yPos - self.data.y + 1
+            if layer == 1 then
+                self.data.state = not self.data.state
+            else
+                self.data.onClickMenu(self.data.items[layer - 1])
+            end
+        end
     end
     returnObj.getPixelAt(self, xPos, yPos)
         local length = (self.data.state and (1 + #(self.data.items))) or 1
         if (xPos >= self.data.x) and (xPos <= (self.data.x - 1 + self.data.size)) and (yPos >= self.data.y) and (yPos <= (self.data.y - 1 + length)) then
-            local layer = yPos - y + 1
-            
-    
+            local layer = yPos - self.data.y + 1
+            local index = xPos - self.data.x + 1
+            if layer == 1 then
+                return (self.data.title.txt):sub(index, index), self.data.title.txtColor, self.data.title.bkColor
+            else
+                local pixel = self.data.items[layer - 1]
+                return (pixel.txt):sub(index, index), pixel.txtColor, pixel.bkColor
+            end
+        end
+    end
+end
