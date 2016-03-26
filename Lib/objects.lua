@@ -52,4 +52,36 @@ function newButton(border, x, y, txt, onColor, offColor, toggle, textColor, onCl
             return char, txtColor, bkColor
         end
     end
+    return returnObj
+end
+
+function getMenue(x, y, title, titleColor, titleBkColor, ...)
+    local returnObj = {
+        ["data"] = {
+            ["title"] = {
+                ["txt"] = title,
+                ["txtColor"] = titleColor,
+                ["bkColor"] = titleBkColor,
+                ["state"] = false
+            },
+            ["items"] = {},
+            ["x"] = x,
+            ["y"] = y
+        }
+    }
+    local maxSize = #title
+    for _, v in ipairs(args) do
+        if #v > maxSize then
+            maxSize = #v
+        end
+    end
+    returnObj.data.size = maxSize
+    returnObj.click = function(self)
+        self.data.state = not self.data.state
+    end
+    returnObj.getPixelAt(self, xPos, yPos)
+        local length = (self.data.state and (1 + #(self.data.items))) or 1
+        if (xPos >= self.data.x) and (xPos <= (self.data.x - 1 + self.data.size)) and (yPos >= self.data.y) and (yPos <= (self.data.y - 1 + length)) then
+            local layer = yPos - y + 1
             
+    
