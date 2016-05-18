@@ -5,27 +5,28 @@ function newButton(border, x, y, txt, onColor, offColor, toggle, textColor, onCl
     border = border or 1
     local topLeftX, topLeftY, bottomRightX, bottomRightY = x - border, y - border, x + (#txt - 1) + border, y + border
     local returnObj = {
-        ["data"] = {
-            ["disabled"] = false,
-            ["x"] = x,
-            ["y"] = y,
-            ["state"] = false,
-            ["toggle"] = toggle,
-            ["txt"] = txt,
-            ["txtColor"] = textColor,
-            ["topLeftX"] = topLeftX,
-            ["topLeftY"] = topLeftY,
-            ["bottomRightX"] = bottomRightX,
-            ["bottomRightY"] = bottomRightY,
-            ["onClick"] = onClick,
-            ["onColor"] = onColor,
-            ["offColor"] = offColor,
-            ["update"] = function(self)
+        data = {
+            border = border,
+            disabled = false,
+            x = x,
+            y = y,
+            state = false,
+            toggle = toggle,
+            txt = txt,
+            txtColor = textColor,
+            topLeftX = topLeftX,
+            topLeftY = topLeftY,
+            bottomRightX = bottomRightX,
+            bottomRightY = bottomRightY,
+            onClick = onClick,
+            onColor = onColor,
+            offColor = offColor,
+            update = function(self)
                 if (not self.data.toggle) and ((self.data.timeLastOn + self.data.timeToStayOn) < advancedTime.getEpochTime()) then
                     self.data.state = false
                 end
             end,
-            ["timeLastOn"] = 0
+            timeLastOn = 0
         }
     }
     returnObj.click = function(self, x, y)
@@ -42,12 +43,15 @@ function newButton(border, x, y, txt, onColor, offColor, toggle, textColor, onCl
         end
     end
     returnObj.getPixelAt = function(self, xPos, yPos)
+        local topLeftX = self.data.x - self.data.border
+        local bottomRightX = self.data.x + #self.data.txt + self.data.border
+        local topLeftY = self.data.y - 
         if (xPos >= topLeftX) and (xPos <= bottomRightX) and (yPos >= topLeftY) and (yPos <= bottomRightY) then
             local bkColor = (self.data.state and self.data.onColor) or self.data.offColor
             local txtColor = self.data.txtColor --TODO: add support for txt color based on state
             local char = " "
-            if (y == yPos) and (xPos >= x) and (xPos <= (x + (#(self.data.txt) - 1))) then
-                char = (self.data.txt):sub(xPos - self.data.x + 1, xPos - self.data + 1)
+            if (self.data.y == yPos) and (xPos >= self.data.x) and (xPos <= (self.data.x + (#(self.data.txt) - 1))) then
+                char = (self.data.txt):sub(xPos - self.data.x + 1, xPos - self.data.x + 1)
             end
             return char, txtColor, bkColor
         end
@@ -57,17 +61,17 @@ end
 
 function getMenue(x, y, title, titleColor, titleBkColor, onClickMenue, ...)
     local returnObj = {
-        ["data"] = {
-            ["title"] = {
-                ["txt"] = title,
-                ["txtColor"] = titleColor,
-                ["bkColor"] = titleBkColor
+        data = {
+            title = {
+                txt = title,
+                txtColor = titleColor,
+                bkColor = titleBkColor
             },
-            ["state"] = false,
-            ["items"] = {},
-            ["x"] = x,
-            ["y"] = y,
-            ["onClickMenu"] = onClickMenue
+            state = false,
+            items = {},
+            x = x,
+            y = y,
+            onClickMenu = onClickMenue
         }
     }
     local maxSize = #title
