@@ -1,3 +1,22 @@
+local function interpret(style)
+    style = textutils.unserialize(style)
+    local newStyle = {
+        border =
+    for k, v in pairs(style) do
+        local temp = newStyle
+        local kParts = {}
+        for kPart in k:gfind("([^-]*)-?") do
+            kParts[#kParts + 1] = kPart
+        end
+        if #kParts > 1 then
+            for i = 1, #kParts - 1 do
+                temp[kParts[i]] = (type(temp[kParts[i]]) == "table") or {}
+                temp = temp[kParts[i]]
+            end
+        end
+        temp[kParts[#kParts]] = v
+    end
+
 function newAlign(myTerm)
     local objects = {list = {}, map = {}}
     return {
