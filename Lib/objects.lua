@@ -1,6 +1,6 @@
 os.loadAPI("BGUIFC/Lib/advancedTime")
 
-function newButton(border, x, y, txt, onColor, offColor, toggle, textColor, onClick, timeToStayOn)
+function newButtonRaw(border, x, y, txt, onColor, offColor, toggle, textColorOn, textColorOff, onClick, timeToStayOn)
     txt = ((txt ~= "") and txt) or " "
     border = border or 1
     local topLeftX, topLeftY, bottomRightX, bottomRightY = x - border, y - border, x + (#txt - 1) + border, y + border
@@ -13,7 +13,8 @@ function newButton(border, x, y, txt, onColor, offColor, toggle, textColor, onCl
             state = false,
             toggle = toggle,
             txt = txt,
-            txtColor = textColor,
+            txtColorOn = textColorOn,
+            txtColorOff = textColorOff,
             topLeftX = topLeftX,
             topLeftY = topLeftY,
             bottomRightX = bottomRightX,
@@ -21,17 +22,19 @@ function newButton(border, x, y, txt, onColor, offColor, toggle, textColor, onCl
             onClick = onClick,
             onColor = onColor,
             offColor = offColor,
-            update = function(self)
-                if (not self.data.toggle) and ((self.data.timeLastOn + self.data.timeToStayOn) < advancedTime.getEpochTime()) then
-                    self.data.state = false
-                end
-            end,
-            timeLastOn = 0
+            timeToStayOn = timeToStayOn,
+            onClick = onClick
         }
     }
+    returnObj.update = function(self)
+        if (not self.data.toggle) and self.data.timeLastOn and ((self.data.timeLastOn + self.data.timeToStayOn) < advancedTime.getEpochTime()) then
+            self.data.state = false
+            self.data.timeLastOn = nil
+        end
+    end
     returnObj.click = function(self, x, y)
         if (x >= topLeftX) and (x <= bottomRightX) and (y >= topLeftY) and (y <= bottomRightY) then
-            if not self.data.disabled then
+            if (not self.data.disabled) then
                 if self.data.toggle then
                     self.data.state = not self.data.state
                 elseif not self.data.state then
@@ -43,10 +46,7 @@ function newButton(border, x, y, txt, onColor, offColor, toggle, textColor, onCl
         end
     end
     returnObj.getPixelAt = function(self, xPos, yPos)
-        local topLeftX = self.data.x - self.data.border
-        local bottomRightX = self.data.x + #self.data.txt + self.data.border
-        local topLeftY = self.data.y - 
-        if (xPos >= topLeftX) and (xPos <= bottomRightX) and (yPos >= topLeftY) and (yPos <= bottomRightY) then
+        if (xPos >= self.data.topLeftX) and (xPos <= self.data.bottomRightX) and (yPos >= self.data.topLeftY) and (yPos <= self.data.bottomRightY) then
             local bkColor = (self.data.state and self.data.onColor) or self.data.offColor
             local txtColor = self.data.txtColor --TODO: add support for txt color based on state
             local char = " "
